@@ -1,0 +1,6 @@
+
+Replace in notepad++ - add go statement
+
+(.*\r?\n){1000}\K
+replace with GO\n
+

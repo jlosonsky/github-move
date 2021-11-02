@@ -1,0 +1,152 @@
+Adira Tasklist
+
+Procedure to (Hard) delete data based on infos in softdelete tabs. 
+- generic
+- run in the loop for all vault tables
+- delete from load_run_id after succesfull delete from vault tabs
+
+UAT load for last 3 years!!!
+
+
+PK: 
+Policy_Member - MNo
+Policy_Member_Plan - 	[MNo],[PPlan] (as Unique index)
+Policy_Member_Premium - 	[PNO],[CLASSNO],[Membership],[MNO],[PPlan] (as Unique index)
+Policy_Membership_Plan -  	[PNO],[CLASSNO],[Membership],[PPlan] (as Unique index)
+Policy_Plan_Schedule -  PNO, PPlan, BAmount
+Policy_QS_Comm_Installment -  [PNO],[ID]
+Policy_QS_Premi_Installment - [PNO],[ID]
+Policy_Classification - [PNO],[CLASSNO]
+Policy_Membership - [PNO],[CLASSNO],[Membership] (arrival/staging only)
+
+[PNO] BETWEEN 33431 AND 34120
+
+
+Vault:
+Policy_Member - Hub/Sat
+Policy_Member_Plan - Hub/Sat
+Policy_Member_Premium - Hub/Sat
+Policy_Membership_Plan -  Hub/Sat
+Policy_Plan_Schedule - Hub/Sat 
+Policy_QS_Comm_Installment -  Hub/Sat
+Policy_QS_Premi_Installment - Hub/Sat
+Policy_Classification - Hub/Sat
+Policy_Member_Policy_Member_Premium_Link
+Policy_Member_Policy_Member_Plan_Link
+Policy_Classification_Policy_Member_Link
+Policy_Classification_Policy_MemberShip_Plan_Link
+Policy_Classification_Policy_MemberShip_Plan_Link - src Policy_Membership
+Policy_Classification_Policy_Member_Link 
+
+
+TODO: uvw
+Policy_Member
+Policy_Member_Premium
+Policy_Member_Plan
+Policy_Membership_Plan
+Policy_Plan_Schedule
+Policy_QS_Comm_Installment
+Policy_QS_Premi_Installment
+Policy_Classification
+
+
+
+[vault_hlt].[Reinsurance_Hub]
+[vault_hlt].[Reinsurance_Sat]
+[vault_hlt].[Repolicy_Sat]
+[vault_hlt].[RE_Hub]
+[vault_hlt].[ClaimLedger_Sat]
+[vault_hlt].[ClaimLedger_Hub]
+[vault_hlt].[ClaimDetail_Sat]
+[vault_hlt].[ClaimDetail_Hub]
+[vault_hlt].[Administration_Sat]
+[vault_hlt].[Administration_Link] – This only has to be loaded once we have all the regarding hubs loaded
+
+[vault_hlt].[Claim_H_Sat]
+[vault_hlt].[Claim_H_Hub]
+[vault_hlt].[Voucher_Sat]
+[vault_hlt].[Voucher_Hub]
+[vault_hlt].[WF_Claim_H_Sat]
+[vault_hlt].[WF_Claim_H_Hub]
+
+[vault_hlt].[WF_Claim_Ledger_Sat]
+[vault_hlt].[WF_Claim_Ledger_Hub]
+[vault_hlt].[WF_CLaim_Link]
+[vault_hlt].[Premium_Ledger_Sat]
+[vault_hlt].[Premium_Ledger_Hub]
+[vault_hlt].[RPart_Sat]
+
+Policy_RE_Link
+RE_Link
+Reclass_Hub
+Reclass_Sat
+RPart_Sat
+PRE_Claim_H_Hub
+PRE_Claim_H_Sat
+
+
+
+###HEALTH
+#Stage/Arrival capital
+#Stage arrival - tables , views, procedures
+#Stage Load procedure
+#Policy Hub and Sat tables
+#Policy Hub and Sat procedures
+Load data Arrival/Staging/Vault
+
+
+
+#1. all Health_Claim views are missing uvw
+#2. Health_Claim Administration link - missing CLAASS table to link ADMNO and CNO (Claim_ledger table)
+#3. Health_Policy: Missing PPLAN table for CHISS_PREMIUM_DETAIL - PPLAn is reference table
+#4. Health_Policy: Missing vault Policy_Link table for CHISS_PREMIUM_DETAIL
+5. Build table for CHISS_PREMIUM_DETAIL
+6. numeric(38,18) change for GI
+
+
+Policy_Premium_Ledger_Link
+Policy_Policy_Fee_Installment_Link
+Policy_Policy_Group_Link
+Policy_Policy_Coinsurance_Link
+Policy_Policy_Commission_Installment_Link
+Policy_Policy_Coverage_Link
+Policy_Policy_Installment_Link
+Policy_Policy_Plan_Schedule_Link
+Policy_Policy_Classification_Link
+--
+Policy_Policy_Member_Premium_Link
+Policy_Policy_Member_Link
+
+
+
+
+
+
+
+
+###GI
+#OS_claim missing table as in Ernesto's email (vid_staging_gin missing uvw_OS_Claim, Claim data)
+Check Claim load in new schema - issue with soft deletes - need to cross check with Ernesto
+Payer_ID in reports: Claim/OS_Claim
+
+Questions: 
+1. Soft Delete in view for vaults - once loadRunId is taged as deleted all the data won't appear no matter if they are for different table
+2. vid and vid_staging flows what is correct direction? vault -vid_staging - vid (for complex reports) also vault- vid (account, claim)
+
+
+
+
+[vault_hlt].[Reinsurance_Sat]
+[vault_hlt].[Repolicy_Sat]
+[vault_hlt].[RPart_Sat]
+
+[vault_hlt].[Administration_Sat]
+[vault_hlt].[ClaimLedger_Sat]
+[vault_hlt].[ClaimDetail_Sat]
+[vault_hlt].[Claim_H_Sat]
+
+
+[vault_hlt].[Voucher_Sat]
+[vault_hlt].[WF_Claim_H_Sat]
+[vault_hlt].[WF_Claim_Ledger_Sat]
+[vault_hlt].[Premium_Ledger_Sat]
